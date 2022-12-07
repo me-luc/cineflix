@@ -1,11 +1,15 @@
 import { GlobalStyle } from "./globalStyles";
-import MovieCover from "./MovieCover";
+
+import Header from "./header/Header";
+import Movies from "./movies/Movies";
+import MovieCover from "./movies/MovieCover";
 
 export default function App() {
 	return (
 		<>
 			<GlobalStyle />
-			<MovieCover />
+			<Header />
+			<Movies />
 		</>
 	);
 }

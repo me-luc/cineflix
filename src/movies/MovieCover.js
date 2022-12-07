@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import loadingGif from "./assets/loading.gif";
+import loadingGif from "../assets/loading.gif";
 
 export default function MovieCover({ img }) {
 	return (
@@ -15,6 +15,7 @@ const StyledMovieCover = styled.div`
 	align-items: center;
 	width: 145px;
 	height: 200px;
+	margin: 5px;
 
 	background: #606060;
 	box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
@@ -24,12 +25,12 @@ const StyledMovieCover = styled.div`
 		${(props) =>
 			props.img &&
 			`width: 125px;
-            height: 180px;
+            height: 185px;
             object-fit: cover;`}
 		${(props) =>
 			!props.img &&
 			`width: 125px;
-            height: 180px;
+            height: 185px;
             object-fit: contain;
             background: #000`}
 	}
