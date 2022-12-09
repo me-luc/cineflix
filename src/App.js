@@ -1,15 +1,16 @@
 import { GlobalStyle } from "./globalStyles";
 
 import Header from "./header/Header";
-import Movies from "./movies/Movies";
-import MovieCover from "./movies/MovieCover";
+import MoviesPage from "./pages/MoviesPage";
+import SeatsPage from "./pages/SeatsPage";
+import Footer from "./footer/Footer";
 
 export default function App() {
 	return (
 		<>
 			<GlobalStyle />
 			<Header />
-			<Movies />
+			<SeatsPage />
 		</>
 	);
 }

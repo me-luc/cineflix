@@ -9,13 +9,14 @@ export default function MovieCover({ img }) {
 	);
 }
 
-const StyledMovieCover = styled.div`
+export const StyledMovieCover = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 145px;
 	height: 200px;
 	margin: 5px;
+	cursor: pointer;
 
 	background: #606060;
 	box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);

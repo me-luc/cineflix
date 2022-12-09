@@ -2,15 +2,26 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import MovieCover from "./MovieCover";
+import loadingGif from "../assets/loading.gif";
+import { Link } from "react-router-dom";
 
 export default function Movies() {
 	const moviesUrl = "https://mock-api.driven.com.br/api/v8/cineflex/movies";
-	const [movies, setMovies] = useState([]);
+	const [movies, setMovies] = useState(null);
 
 	useEffect(() => {
 		const promise = axios.get(moviesUrl);
 		promise.then((answer) => setMovies(answer.data));
+		console.log(movies);
 	}, []);
+
+	if (!movies) {
+		return (
+			<StyledMovies>
+				<img src={loadingGif} alt="" />
+			</StyledMovies>
+		);
+	}
 
 	return (
 		<StyledMovies>
@@ -18,7 +29,9 @@ export default function Movies() {
 
 			<div className="movies-box">
 				{movies.map((movie) => (
-					<MovieCover img={movie.posterURL} />
+					<a to="hi">
+						<MovieCover img={movie.posterURL} />
+					</a>
 				))}
 			</div>
 		</StyledMovies>
