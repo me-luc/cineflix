@@ -4,6 +4,7 @@ import axios from "axios";
 import MovieCover from "./MovieCover";
 import loadingGif from "../assets/loading.gif";
 import { Link } from "react-router-dom";
+import Footer from "../footer/Footer";
 
 export default function Movies() {
 	const moviesUrl = "https://mock-api.driven.com.br/api/v8/cineflex/movies";

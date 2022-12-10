@@ -4,15 +4,17 @@ import styled from "styled-components";
 import Footer from "../footer/Footer";
 import loadingGif from "../assets/loading.gif";
 import { Title } from "../globalStyles";
+import Seat from "../seats/Seat";
 
 export default function SeatsPage() {
 	const seatsURL =
 		"https://mock-api.driven.com.br/api/v8/cineflex/showtimes/1/seats";
 	const [seats, setSeats] = useState(null);
+	const [selectedSeats, setSelectedSeats] = useState([]);
 
 	useEffect(() => {
 		const promise = axios.get(seatsURL);
-		promise.then((answer) => setSeats(answer.data.seats));
+		promise.then((answer) => setSeats(answer.data));
 	}, []);
 
 	if (!seats) {
@@ -27,11 +29,37 @@ export default function SeatsPage() {
 		<>
 			<StyledPage>
 				<Title>Selecione o(s) assento(s)</Title>
-				<div className="seats-box">
-					{seats.map((seat, index) => (
-						<Seat isAvailable={seat.isAvailable}>{index}</Seat>
+				<SeatsBox>
+					{seats.seats.map((item) => (
+						<Seat
+							id={item.id}
+							isSelected={selectedSeats.includes(item.id)}
+							setSelectedSeats={setSelectedSeats}
+							selectedSeats={selectedSeats}
+							key={item.id}
+						/>
 					))}
+				</SeatsBox>
+				<div className="description">
+					<div className="box">
+						<Seat isSelected={true}></Seat>
+						<ButtonTitle>Selecionado</ButtonTitle>
+					</div>
+					<div className="box">
+						<Seat isAvailable={true}></Seat>
+						<ButtonTitle>Disponível</ButtonTitle>
+					</div>
+					<div className="box">
+						<Seat isAvailable={false}></Seat>
+						<ButtonTitle>Indisponível</ButtonTitle>
+					</div>
 				</div>
+
+				<form action="">
+					<input type="text" placeholder="Digite seu nome..." />
+					<input type="text" placeholder="Digite seu CPF..." />
+					<button type="onSubmit">Reservar assento(s)</button>
+				</form>
 			</StyledPage>
 			<Footer />
 		</>
@@ -43,36 +71,67 @@ const StyledPage = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+
+	.description {
+		margin: 20px 0;
+		display: flex;
+	}
+
+	.box {
+		margin-left: 40px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		input {
+			width: 325px;
+			height: 50px;
+			background: #ffffff;
+			border: 1px solid #d5d5d5;
+			border-radius: 3px;
+			margin: 10px 0;
+		}
+
+		button {
+			width: 225px;
+			height: 40px;
+
+			background: #3a4be8;
+			border-radius: 3px;
+			border: none;
+		}
+	}
 `;
 
-const Seat = styled.div`
-	width: 25px;
-	height: 25px;
-
-	background: #c3cfd9;
-	border: 1px solid #808f9d;
-	border-radius: 12px;
-
+const SeatsBox = styled.div`
 	display: flex;
+	width: 350px;
+	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
 
-	text-align: center;
+	@media (min-width: 720px) {
+		width: 600px;
+		border-radius: 25px;
+	}
+`;
+
+const ButtonTitle = styled.p`
 	font-family: "Roboto";
 	font-style: normal;
 	font-weight: 500;
-	font-size: 11px;
-	line-height: 13px;
-	display: flex;
+	font-size: 13px;
+	line-height: 15px;
 	align-items: center;
-	text-align: center;
-	letter-spacing: 0.04em;
+	letter-spacing: -0.013em;
 
-	color: #000000;
-
-	@media (min-width: 750px) {
-		width: 50px;
-		height: 50px;
-		border-radius: 25px;
-	}
+	color: #ffffff;
 `;
