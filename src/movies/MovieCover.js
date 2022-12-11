@@ -35,4 +35,7 @@ export const StyledMovieCover = styled.div`
             object-fit: contain;
             background: #000`}
 	}
+	:hover {
+		background: #3a4be8;
+	}
 `;

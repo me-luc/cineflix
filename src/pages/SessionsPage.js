@@ -1,31 +1,93 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../footer/Footer";
+import loadingGif from "../assets/loading.gif";
+import axios from "axios";
+import { useParams, Link } from "react-router-dom";
 
 export default function SessionsPage() {
+	const { idFilme } = useParams();
+	const URL = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`;
+	const [sessions, setSessions] = useState(null);
+
+	useEffect(() => {
+		const promise = axios.get(URL);
+		promise.then((answer) => setSessions(answer.data));
+	}, []);
+
+	if (!sessions) {
+		return (
+			<StyledPage>
+				<img src={loadingGif} alt="loading animation" />
+			</StyledPage>
+		);
+	}
+	console.log(sessions);
+	const movieTitle = sessions.title;
+	const movieImg = sessions.posterURL;
+	const movieSchedule = sessions;
+
 	return (
 		<StyledPage>
 			<StyledPageTitle>Selecione o horário</StyledPageTitle>
-			<OptionBox>
-				<StyledInfoTitle>Quinta-feira - 24/06/2021</StyledInfoTitle>
-				<div className="time-options">
-					<StyledButton>15:00</StyledButton>
-					<StyledButton>19:00</StyledButton>
-				</div>
-			</OptionBox>
+			<Content>
+				{sessions.days.map((day) => {
+					return (
+						<OptionBox>
+							<StyledInfoTitle>
+								{day.weekday} - {day.date}
+							</StyledInfoTitle>
+							<div className="time-options">
+								{day.showtimes.map((showtime) => {
+									return (
+										<Link to={`/assentos/${showtime.id}`}>
+											<StyledButton>
+												{showtime.name}
+											</StyledButton>
+										</Link>
+									);
+								})}
+							</div>
+						</OptionBox>
+					);
+				})}
+			</Content>
 
-			<Footer />
+			<Footer img={movieImg} title={movieTitle} schedule={null} />
 		</StyledPage>
 	);
 }
 
+const Content = styled.div`
+	margin-bottom: 180px;
+
+	@media (max-width: 450px) {
+		width: 100vw;
+		box-sizing: border-box;
+		padding: 20px;
+	}
+`;
+
 const OptionBox = styled.div`
+	margin-top: 20px;
+	width: 400px;
+	min-width: 360px;
+
 	.time-options {
 		display: flex;
-		margin-top: 30px;
+		margin-top: 10px;
+	}
+
+	@media (min-width: 450px) {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
 `;
 
 const StyledPageTitle = styled.h1`
+	overflow-y: scroll;
 	font-family: "Roboto";
 	font-style: normal;
 	font-weight: 400;
@@ -37,7 +99,7 @@ const StyledPageTitle = styled.h1`
 	letter-spacing: 0.04em;
 
 	color: #ffffff;
-	margin-bottom: 40px;
+	margin-bottom: 15px;
 `;
 
 const StyledInfoTitle = styled.h1`
@@ -51,6 +113,8 @@ const StyledInfoTitle = styled.h1`
 	letter-spacing: 0.02em;
 
 	color: #ffffff;
+
+	margin
 `;
 
 const StyledPage = styled.div`

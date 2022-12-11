@@ -1,9 +1,12 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export default function Header() {
 	return (
 		<StyledHeader>
-			<h1>CINEFLIX</h1>
+			<Link to={"/"}>
+				<h1>CINEFLIX</h1>
+			</Link>
 		</StyledHeader>
 	);
 }
@@ -11,7 +14,7 @@ export default function Header() {
 const StyledHeader = styled.div`
 	width: 100vw;
 	height: 65px;
-	margin-bottom: 50px;
+	margin-bottom: 30px;
 
 	background: #000000;
 
@@ -26,4 +29,12 @@ const StyledHeader = styled.div`
 	text-align: center;
 
 	color: #3a4be8;
+
+	a {
+		text-decoration: none;
+		color: #3a4be8;
+	}
+	a:hover {
+		color: #808f9d;
+	}
 `;

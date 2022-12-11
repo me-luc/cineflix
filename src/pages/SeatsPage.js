@@ -5,16 +5,19 @@ import Footer from "../footer/Footer";
 import loadingGif from "../assets/loading.gif";
 import { Title } from "../globalStyles";
 import Seat from "../seats/Seat";
+import { useParams } from "react-router-dom";
 
 export default function SeatsPage() {
-	const seatsURL =
-		"https://mock-api.driven.com.br/api/v8/cineflex/showtimes/1/seats";
+	const { idSessao } = useParams();
+
+	const seatsURL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`;
 	const [seats, setSeats] = useState(null);
 	const [selectedSeats, setSelectedSeats] = useState([]);
 
 	useEffect(() => {
 		const promise = axios.get(seatsURL);
 		promise.then((answer) => setSeats(answer.data));
+		promise.catch((res) => console.log(res));
 	}, []);
 
 	if (!seats) {
@@ -32,7 +35,9 @@ export default function SeatsPage() {
 				<SeatsBox>
 					{seats.seats.map((item) => (
 						<Seat
+							name={item.name}
 							id={item.id}
+							isAvailable={item.isAvailable}
 							isSelected={selectedSeats.includes(item.id)}
 							setSelectedSeats={setSelectedSeats}
 							selectedSeats={selectedSeats}
@@ -71,6 +76,7 @@ const StyledPage = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 180px;
 
 	.description {
 		margin: 20px 0;
@@ -107,6 +113,7 @@ const StyledPage = styled.div`
 			background: #3a4be8;
 			border-radius: 3px;
 			border: none;
+			cursor: pointer;
 		}
 	}
 `;

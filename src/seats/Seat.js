@@ -2,15 +2,15 @@ import styled from "styled-components";
 
 export default function Seat({
 	id,
+	name,
 	isAvailable,
 	isSelected,
 	setSelectedSeats,
 	selectedSeats,
 }) {
-	console.log(isSelected);
 	return (
 		<StyledSeat isAvailable={isAvailable} isSelected={isSelected}>
-			{id}
+			{name}
 		</StyledSeat>
 	);
 }
