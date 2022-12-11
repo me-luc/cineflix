@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import MovieCover from "../movies/MovieCover";
 import loadingGif from "../assets/loading.gif";
-import { Link } from "react-router-dom";
-import Footer from "../footer/Footer";
 
 export default function MoviesPage() {
 	const moviesUrl = "https://mock-api.driven.com.br/api/v8/cineflex/movies";
@@ -14,7 +14,7 @@ export default function MoviesPage() {
 		const promise = axios.get(moviesUrl);
 		promise.then((answer) => setMovies(answer.data));
 	}, []);
-
+	console.log(movies);
 	if (!movies) {
 		return (
 			<StyledMovies>
@@ -25,7 +25,7 @@ export default function MoviesPage() {
 
 	return (
 		<StyledMovies>
-			<p>Selecione o filme!</p>
+			<p title="ehy">Selecione o filme!</p>
 
 			<div className="movies-box">
 				{movies.map((movie) => (
@@ -34,7 +34,6 @@ export default function MoviesPage() {
 					</Link>
 				))}
 			</div>
-			<Footer />
 		</StyledMovies>
 	);
 }

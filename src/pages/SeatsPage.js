@@ -20,6 +20,8 @@ export default function SeatsPage() {
 		promise.catch((res) => console.log(res));
 	}, []);
 
+	console.log("SELECTED -> ", selectedSeats);
+
 	if (!seats) {
 		return (
 			<StyledPage>
@@ -28,46 +30,48 @@ export default function SeatsPage() {
 		);
 	}
 
-	return (
-		<>
-			<StyledPage>
-				<Title>Selecione o(s) assento(s)</Title>
-				<SeatsBox>
-					{seats.seats.map((item) => (
-						<Seat
-							name={item.name}
-							id={item.id}
-							isAvailable={item.isAvailable}
-							isSelected={selectedSeats.includes(item.id)}
-							setSelectedSeats={setSelectedSeats}
-							selectedSeats={selectedSeats}
-							key={item.id}
-						/>
-					))}
-				</SeatsBox>
-				<div className="description">
-					<div className="box">
-						<Seat isSelected={true}></Seat>
-						<ButtonTitle>Selecionado</ButtonTitle>
-					</div>
-					<div className="box">
-						<Seat isAvailable={true}></Seat>
-						<ButtonTitle>Disponível</ButtonTitle>
-					</div>
-					<div className="box">
-						<Seat isAvailable={false}></Seat>
-						<ButtonTitle>Indisponível</ButtonTitle>
-					</div>
-				</div>
+	function book(event) {
+		event.preventDefault();
+	}
 
-				<form action="">
-					<input type="text" placeholder="Digite seu nome..." />
-					<input type="text" placeholder="Digite seu CPF..." />
-					<button type="onSubmit">Reservar assento(s)</button>
-				</form>
-			</StyledPage>
+	return (
+		<StyledPage>
+			<Title>Selecione o(s) assento(s)</Title>
+			<SeatsBox>
+				{seats.seats.map((item) => (
+					<Seat
+						name={item.name}
+						id={item.id}
+						isAvailable={item.isAvailable}
+						isSelected={selectedSeats.includes(item.id)}
+						setSelectedSeats={setSelectedSeats}
+						selectedSeats={selectedSeats}
+						key={item.id}
+					/>
+				))}
+			</SeatsBox>
+			<div className="description">
+				<div className="box">
+					<Seat isSelected={true}></Seat>
+					<ButtonTitle>Selecionado</ButtonTitle>
+				</div>
+				<div className="box">
+					<Seat isAvailable={true}></Seat>
+					<ButtonTitle>Disponível</ButtonTitle>
+				</div>
+				<div className="box">
+					<Seat isAvailable={false}></Seat>
+					<ButtonTitle>Indisponível</ButtonTitle>
+				</div>
+			</div>
+
+			<form action="">
+				<input type="text" placeholder="Digite seu nome..." />
+				<input type="text" placeholder="Digite seu CPF..." />
+				<button type="onSubmit">Reservar assento(s)</button>
+			</form>
 			<Footer />
-		</>
+		</StyledPage>
 	);
 }
 
@@ -104,6 +108,26 @@ const StyledPage = styled.div`
 			border: 1px solid #d5d5d5;
 			border-radius: 3px;
 			margin: 10px 0;
+			padding-left: 20px;
+
+			font-family: "Roboto";
+			font-style: italic;
+			font-weight: 600;
+			font-size: 18px;
+			line-height: 21px;
+			display: flex;
+			align-items: center;
+		}
+		input::placeholder {
+			font-family: "Roboto";
+			font-style: italic;
+			font-weight: 400;
+			font-size: 18px;
+			line-height: 21px;
+			display: flex;
+			align-items: center;
+
+			color: #afafaf;
 		}
 
 		button {
@@ -114,6 +138,22 @@ const StyledPage = styled.div`
 			border-radius: 3px;
 			border: none;
 			cursor: pointer;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			font-family: "Roboto";
+			font-style: normal;
+			font-weight: 400;
+			font-size: 18px;
+			line-height: 21px;
+			display: flex;
+			align-items: center;
+			text-align: center;
+			letter-spacing: 0.04em;
+
+			color: #ffffff;
 		}
 	}
 `;

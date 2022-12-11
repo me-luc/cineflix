@@ -8,31 +8,52 @@ export default function Seat({
 	setSelectedSeats,
 	selectedSeats,
 }) {
+	function handleClick() {
+		if (!selectedSeats.includes(id) && isAvailable) {
+			const newArr = [...selectedSeats, id];
+			setSelectedSeats(newArr);
+		} else {
+		}
+	}
 	return (
-		<StyledSeat isAvailable={isAvailable} isSelected={isSelected}>
+		<StyledSeat
+			isAvailable={isAvailable}
+			isSelected={isSelected}
+			onClick={handleClick}>
 			{name}
 		</StyledSeat>
 	);
+}
+
+function handleColor(type, isAvailable, isSelected) {
+	if (type === "bkg") {
+		if (!isAvailable) {
+			return "#FBE192";
+		}
+		if (isAvailable && isSelected) {
+			return "#1AAE9E";
+		}
+		return "#c3cfd9";
+	} else {
+		if (!isAvailable) {
+			return "#F7C52B";
+		}
+		if (isAvailable && isSelected) {
+			return "#0E7D71";
+		}
+		return "#808f9d";
+	}
 }
 
 const StyledSeat = styled.button`
 	width: 25px;
 	height: 25px;
 	margin: 5px;
-
-	background: ${(props) =>
-		props.isAvailable
-			? "#c3cfd9"
-			: props.isSelected
-			? "#1AAE9E"
-			: "#FBE192"};
+	background: ${({ isAvailable, isSelected }) =>
+		handleColor("bkg", isAvailable, isSelected)};
 	border: 1px solid
-		${(props) =>
-			props.isAvailable
-				? "#808f9d"
-				: props.isSelected
-				? "#0E7D71"
-				: "#F7C52B"};
+		${({ isAvailable, isSelected }) =>
+			handleColor("border", isAvailable, isSelected)};
 	border-radius: 12px;
 
 	display: flex;
