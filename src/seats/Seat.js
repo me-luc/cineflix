@@ -12,6 +12,10 @@ export default function Seat({
 	function handleClick() {
 		if (type !== "clickable") return;
 
+		if (!isAvailable) {
+			alert("Esse assento não está disponível");
+		}
+
 		if (!selectedSeats.includes(id) && isAvailable) {
 			const newArr = [...selectedSeats, id];
 			setSelectedSeats(newArr);
@@ -77,7 +81,7 @@ const StyledSeat = styled.button`
 	text-align: center;
 	letter-spacing: 0.04em;
 	${({ isAvailable, type }) =>
-		isAvailable && type === "static" && "cursor: pointer"};
+		isAvailable && type !== "static" && "cursor: pointer"};
 	color: #000000;
 
 	@media (min-width: 720px) {
