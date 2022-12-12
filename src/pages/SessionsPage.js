@@ -22,10 +22,9 @@ export default function SessionsPage() {
 			</StyledPage>
 		);
 	}
-	console.log(sessions);
+
 	const movieTitle = sessions.title;
 	const movieImg = sessions.posterURL;
-	const movieSchedule = sessions;
 
 	return (
 		<StyledPage>
@@ -33,7 +32,7 @@ export default function SessionsPage() {
 			<Content>
 				{sessions.days.map((day) => {
 					return (
-						<OptionBox>
+						<OptionBox data-test="movie-day">
 							<StyledInfoTitle>
 								{day.weekday} - {day.date}
 							</StyledInfoTitle>
@@ -41,9 +40,9 @@ export default function SessionsPage() {
 								{day.showtimes.map((showtime) => {
 									return (
 										<Link to={`/assentos/${showtime.id}`}>
-											<StyledButton>
+											<StyledHourButton data-test="showtime">
 												{showtime.name}
-											</StyledButton>
+											</StyledHourButton>
 										</Link>
 									);
 								})}
@@ -124,7 +123,7 @@ const StyledPage = styled.div`
 	align-items: center;
 `;
 
-const StyledButton = styled.button`
+const StyledHourButton = styled.button`
 	width: 80px;
 	height: 40px;
 	left: 24px;

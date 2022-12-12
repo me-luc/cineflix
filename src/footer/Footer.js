@@ -4,7 +4,7 @@ import loadingGif from "../assets/loading.gif";
 
 export default function Footer({ img, title, schedule }) {
 	return (
-		<StyledFooter>
+		<StyledFooter data-test="footer">
 			<StyledMovieSmallCover img={img}>
 				<img src={img ? img : loadingGif} alt="" />
 			</StyledMovieSmallCover>
@@ -21,11 +21,22 @@ const StyledFooter = styled.div`
 	width: 100%;
 	height: 115px;
 	display: flex;
+
 	justify-content: center;
 	align-items: center;
 	position: fixed;
 	bottom: 0;
 	left: 0;
+
+	box-sizing: border-box;
+	padding: 0 20px;
+
+	.description {
+		display: flex;
+		flex-direction: column;
+		justify-content: left;
+		align-items: left;
+	}
 
 	h1 {
 		font-family: "Roboto";
@@ -43,7 +54,7 @@ const StyledFooter = styled.div`
 const StyledMovieSmallCover = styled(StyledMovieCover)`
 	width: 80px;
 	height: 105px;
-	margin-right: 50px;
+	margin-right: 20px;
 	background: #fff;
 
 	img {

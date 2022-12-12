@@ -3,7 +3,7 @@ import loadingGif from "../assets/loading.gif";
 
 export default function MovieCover({ img }) {
 	return (
-		<StyledMovieCover img={img}>
+		<StyledMovieCover img={img} data-test="movie">
 			<img src={img ? img : loadingGif} alt="" />
 		</StyledMovieCover>
 	);

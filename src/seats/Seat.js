@@ -7,16 +7,22 @@ export default function Seat({
 	isSelected,
 	setSelectedSeats,
 	selectedSeats,
+	type,
 }) {
 	function handleClick() {
+		if (type !== "clickable") return;
+
 		if (!selectedSeats.includes(id) && isAvailable) {
 			const newArr = [...selectedSeats, id];
 			setSelectedSeats(newArr);
 		} else {
+			const newArr = selectedSeats.filter((el) => el !== id);
+			setSelectedSeats(newArr);
 		}
 	}
 	return (
 		<StyledSeat
+			data-test="seat"
 			isAvailable={isAvailable}
 			isSelected={isSelected}
 			onClick={handleClick}>
@@ -70,7 +76,8 @@ const StyledSeat = styled.button`
 	align-items: center;
 	text-align: center;
 	letter-spacing: 0.04em;
-	cursor: pointer;
+	${({ isAvailable, type }) =>
+		isAvailable && type === "static" && "cursor: pointer"};
 	color: #000000;
 
 	@media (min-width: 720px) {

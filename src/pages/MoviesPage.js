@@ -14,7 +14,7 @@ export default function MoviesPage() {
 		const promise = axios.get(moviesUrl);
 		promise.then((answer) => setMovies(answer.data));
 	}, []);
-	console.log(movies);
+
 	if (!movies) {
 		return (
 			<StyledMovies>

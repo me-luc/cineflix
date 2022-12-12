@@ -1,26 +1,41 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-export default function SuccessPage() {
+export default function SuccessPage({ userSessionInfo }) {
+	const { name, CPF, seats, day, movie } = userSessionInfo;
+	console.log("INFO NA SUCCCESS PAGE -> ", userSessionInfo);
 	return (
 		<StyledPage>
 			<StyledMessage>Pedido feito com sucesso!</StyledMessage>
 
-			<div className="info-box">
+			<div className="info-box" data-test="movie-info">
 				<StyledInfoTitle>Filme e sessão</StyledInfoTitle>
-				<StyledInfo>Enola Holmes</StyledInfo>
-				<StyledInfo> 24/06/2021 15:00</StyledInfo>
+				<StyledInfo>{movie}</StyledInfo>
+				<StyledInfo>
+					{" "}
+					{day.date} {day.hour}
+				</StyledInfo>
 			</div>
-			<div className="info-box">
+
+			<div className="info-box" data-test="seats-info">
 				<StyledInfoTitle>Ingressos</StyledInfoTitle>
-				<StyledInfo>Assento 15</StyledInfo>
-				<StyledInfo>Assento 16</StyledInfo>
+
+				{seats.map((seat) => (
+					<StyledInfo>Assento {seat.name}</StyledInfo>
+				))}
 			</div>
-			<div className="info-box">
+
+			<div className="info-box" data-test="client-info">
 				<StyledInfoTitle>Comprador</StyledInfoTitle>
-				<StyledInfo>Nome: João da Silva Sauro </StyledInfo>
-				<StyledInfo>CPF: 123.456.789-10</StyledInfo>
+				<StyledInfo>Nome: {name}</StyledInfo>
+				<StyledInfo>CPF: {CPF}</StyledInfo>
 			</div>
-			<StyledButton>Voltar pra Home</StyledButton>
+
+			<Link to={"/"}>
+				<StyledButton data-test="go-home-btn">
+					Voltar pra Home
+				</StyledButton>
+			</Link>
 		</StyledPage>
 	);
 }

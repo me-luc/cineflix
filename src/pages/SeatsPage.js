@@ -5,22 +5,26 @@ import Footer from "../footer/Footer";
 import loadingGif from "../assets/loading.gif";
 import { Title } from "../globalStyles";
 import Seat from "../seats/Seat";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function SeatsPage() {
+export default function SeatsPage({ setUserSessionInfo }) {
+	const URL =
+		"https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many";
 	const { idSessao } = useParams();
-
+	const [selectedSeats, setSelectedSeats] = useState([]);
 	const seatsURL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`;
 	const [seats, setSeats] = useState(null);
-	const [selectedSeats, setSelectedSeats] = useState([]);
+	const [name, setName] = useState("");
+	const [CPF, setCPF] = useState("");
+	const [errors, setErrors] = useState([]);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const promise = axios.get(seatsURL);
 		promise.then((answer) => setSeats(answer.data));
 		promise.catch((res) => console.log(res));
 	}, []);
-
-	console.log("SELECTED -> ", selectedSeats);
 
 	if (!seats) {
 		return (
@@ -30,8 +34,49 @@ export default function SeatsPage() {
 		);
 	}
 
-	function book(event) {
-		event.preventDefault();
+	const movieTitle = seats.movie.title;
+	const movieImg = seats.movie.posterURL;
+	const schedule = `${seats.day.weekday} - ${seats.name}`;
+
+	function validateData() {
+		const currentErrors = [];
+
+		if (name.length === 0) currentErrors.push("Preencha o campo nome!");
+		if (CPF.length === 0) currentErrors.push("Preencha o campo CPF!");
+		if (selectedSeats.length === 0)
+			currentErrors.push("Selecione pelo menos um assento!");
+
+		setErrors(currentErrors);
+		return currentErrors.length === 0;
+	}
+
+	function bookSession(e) {
+		e.preventDefault();
+
+		if (!validateData()) {
+			return;
+		}
+
+		const obj = {
+			ids: selectedSeats,
+			name: name,
+			CPF: CPF,
+		};
+		const promise = axios.post(URL, obj);
+		promise.then((answer) => console.log(answer.response));
+		promise.catch((answer) => console.log(answer.response));
+
+		const selectedSeatsName = seats.seats.filter((element) =>
+			selectedSeats.includes(element.id)
+		);
+		obj.seats = selectedSeatsName;
+		obj.day = {
+			date: seats.day.date,
+			hour: seats.name,
+		};
+		obj.movie = seats.movie.title;
+		setUserSessionInfo(obj);
+		navigate("/sucesso");
 	}
 
 	return (
@@ -40,6 +85,7 @@ export default function SeatsPage() {
 			<SeatsBox>
 				{seats.seats.map((item) => (
 					<Seat
+						type={"clickable"}
 						name={item.name}
 						id={item.id}
 						isAvailable={item.isAvailable}
@@ -50,27 +96,54 @@ export default function SeatsPage() {
 					/>
 				))}
 			</SeatsBox>
+
 			<div className="description">
 				<div className="box">
-					<Seat isSelected={true}></Seat>
+					<Seat
+						type="static"
+						isSelected={true}
+						isAvailable={true}></Seat>
 					<ButtonTitle>Selecionado</ButtonTitle>
 				</div>
 				<div className="box">
-					<Seat isAvailable={true}></Seat>
+					<Seat type="static" isAvailable={true}></Seat>
 					<ButtonTitle>Disponível</ButtonTitle>
 				</div>
 				<div className="box">
-					<Seat isAvailable={false}></Seat>
-					<ButtonTitle>Indisponível</ButtonTitle>
+					<Seat type="static" isAvailable={false}></Seat>
+					<ButtonTitle style={{ cursor: "initial" }}>
+						Indisponível
+					</ButtonTitle>
 				</div>
 			</div>
 
-			<form action="">
-				<input type="text" placeholder="Digite seu nome..." />
-				<input type="text" placeholder="Digite seu CPF..." />
-				<button type="onSubmit">Reservar assento(s)</button>
+			<form onSubmit={bookSession}>
+				<input
+					type="text"
+					value={name}
+					data-test="client-name"
+					onChange={(e) => setName(e.target.value)}
+					placeholder="Digite seu nome..."
+					required
+				/>
+				<input
+					type="number"
+					value={CPF}
+					data-test="client-cpf"
+					onChange={(e) => setCPF(e.target.value)}
+					placeholder="Digite seu CPF..."
+					required
+				/>
+				<div className="errors">
+					{errors.map((error) => (
+						<p>{error}</p>
+					))}
+				</div>
+				<button type="onSubmit" data-test="book-seat-btn">
+					Reservar assento(s)
+				</button>
 			</form>
-			<Footer />
+			<Footer img={movieImg} title={movieTitle} schedule={schedule} />
 		</StyledPage>
 	);
 }
@@ -93,6 +166,21 @@ const StyledPage = styled.div`
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+	}
+
+	.errors {
+		width: 325px;
+
+		p {
+			font-family: "Roboto";
+			font-style: normal;
+			font-weight: 700;
+			font-size: 18px;
+			line-height: 28px;
+			letter-spacing: 0.04em;
+
+			color: tomato;
+		}
 	}
 
 	form {
