@@ -10,10 +10,11 @@ export default function SuccessPage({ userSessionInfo }) {
 
 			<div className="info-box" data-test="movie-info">
 				<StyledInfoTitle>Filme e sessão</StyledInfoTitle>
-				<StyledInfo>{movie}</StyledInfo>
+				<StyledInfo>{movie ? movie : "loading.."}</StyledInfo>
 				<StyledInfo>
 					{" "}
-					{day.date} {day.hour}
+					{day.date ? day.date : "loading.."}{" "}
+					{day.hour ? day.hour : "loading.."}
 				</StyledInfo>
 			</div>
 
@@ -21,14 +22,16 @@ export default function SuccessPage({ userSessionInfo }) {
 				<StyledInfoTitle>Ingressos</StyledInfoTitle>
 
 				{seats.map((seat) => (
-					<StyledInfo>Assento {seat.name}</StyledInfo>
+					<StyledInfo>
+						Assento {seat.name ? seat.name : "loading.."}
+					</StyledInfo>
 				))}
 			</div>
 
 			<div className="info-box" data-test="client-info">
 				<StyledInfoTitle>Comprador</StyledInfoTitle>
-				<StyledInfo>Nome: {name}</StyledInfo>
-				<StyledInfo>CPF: {CPF}</StyledInfo>
+				<StyledInfo>Nome: {name ? name : "loading.."}</StyledInfo>
+				<StyledInfo>CPF: {CPF ? CPF : "loading.."}</StyledInfo>
 			</div>
 
 			<Link to={"/"}>

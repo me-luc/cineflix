@@ -8,11 +8,13 @@ import Seat from "../seats/Seat";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function SeatsPage({ setUserSessionInfo }) {
-	const URL =
-		"https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many";
 	const { idSessao } = useParams();
-	const [selectedSeats, setSelectedSeats] = useState([]);
+
+	const postURL =
+		"https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many";
 	const seatsURL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`;
+
+	const [selectedSeats, setSelectedSeats] = useState([]);
 	const [seats, setSeats] = useState(null);
 	const [name, setName] = useState("");
 	const [CPF, setCPF] = useState("");
@@ -57,24 +59,29 @@ export default function SeatsPage({ setUserSessionInfo }) {
 			return;
 		}
 
-		const obj = {
+		const promise = axios.post(postURL, {
 			ids: selectedSeats,
 			name: name,
 			CPF: CPF,
-		};
-		const promise = axios.post(URL, obj);
-		promise.then((answer) => console.log(answer.response));
-		promise.catch((answer) => console.log(answer.response));
+		});
+		promise.then((answer) => console.log(answer));
+		promise.catch((answer) => console.log(answer));
 
 		const selectedSeatsName = seats.seats.filter((element) =>
 			selectedSeats.includes(element.id)
 		);
-		obj.seats = selectedSeatsName;
-		obj.day = {
-			date: seats.day.date,
-			hour: seats.name,
+		const obj = {
+			ids: selectedSeats,
+			name: name,
+			CPF: CPF,
+			seats: selectedSeatsName,
+			day: {
+				date: seats.day.date,
+				hour: seats.name,
+			},
 		};
 		obj.movie = seats.movie.title;
+		console.log("OBJ -> ", obj);
 		setUserSessionInfo(obj);
 		navigate("/sucesso");
 	}
