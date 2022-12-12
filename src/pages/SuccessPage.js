@@ -1,9 +1,18 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import loadingGif from "../assets/loading.gif";
 
 export default function SuccessPage({ userSessionInfo }) {
+	if (!userSessionInfo) {
+		return (
+			<StyledPage>
+				<img src={loadingGif} alt="loading animation" />
+			</StyledPage>
+		);
+	}
+
 	const { name, CPF, seats, day, movie } = userSessionInfo;
-	console.log("INFO NA SUCCCESS PAGE -> ", userSessionInfo);
+
 	return (
 		<StyledPage>
 			<StyledMessage>Pedido feito com sucesso!</StyledMessage>

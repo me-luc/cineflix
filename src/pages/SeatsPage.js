@@ -134,7 +134,7 @@ export default function SeatsPage({ setUserSessionInfo }) {
 					required
 				/>
 				<input
-					type="text"
+					type="number"
 					value={CPF}
 					data-test="client-cpf"
 					onChange={(e) => setCPF(e.target.value)}
